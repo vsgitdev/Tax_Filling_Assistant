@@ -24,8 +24,8 @@ def submit():
         income = float(income)
         expenses = float(expenses)
         
-        if income < 0 or expenses < 0:
-            return redirect(url_for('error', message="Income and expenses must be non-negative"))
+        if income <= 0 or expenses <= 0:
+            return redirect(url_for('error', message="Income and expenses must be non-negative or zero"))
         if len(str(int(income))) > 10 or len(str(int(expenses))) > 10:
             return redirect(url_for('error', message="Income and expenses must not exceed 10 digits"))
     except ValueError:
