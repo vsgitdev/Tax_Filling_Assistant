@@ -9,8 +9,12 @@
     <nav>
         <h1>TaxViser</h1>
     </nav>
-    <h2>Data Correct</h2>
-    <p>The data was submitted successfully.</p>
-    <a href="{{ url_for('home') }}">Go back to the form</a>
+    <div class="content">
+        <h2>AI-Generated Tax Advice:</h2>
+        <div class="advice-container">
+            <p>{{ advice }}</p>
+        </div>
+        <a href="{{ url_for('home') }}">Go back to the form</a>
+    </div>
 </body>
 </html>
