@@ -1,4 +1,5 @@
----------------STEP 1------------------
+---------------------------------STEP 1----------------------------------
+--------------Setup process and how to run the application---------------
 
 
 ---------Tax Filing Assistant----------
@@ -92,6 +93,7 @@ Google Fonts for the fonts
 
 
 
----------------STEP 2------------------
+------------------------STEP 2------------------------
+---------Documentation of the API endpoints-----------
 
  
