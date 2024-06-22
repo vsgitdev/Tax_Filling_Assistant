@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Libre+Baskerville&family=Merriweather&family=Playfair+Display&display=swap" 
+    rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <title>TaxViser</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav><h1>TaxViser</h1></nav>
+    <div>
+        <h2>Welcome to your Tax Filing Assistant</h2>
+        <ul>
+         <li>
+            <i class="fa-solid fa-lightbulb"></i>
+            <p>Our AI-driven assistant offers personalized tax advice for your unique financial situation.</p>
+         </li>        
+         <li>
+            <i class="fa-solid fa-handshake"></i>
+            <p>Streamline your tax filing process with our easy-to-use web application.</p>
+         </li>
+         <li>
+            <i class="fa-solid fa-wallet"></i>
+            <p>Maximize your deductions and credits effortlessly with expert guidance.</p>
+         </li>
+      </ul>
+    </div>
+    <div>
+        <form action="/submit" method="POST">
+            <h3>Ready for Stress-Free Tax Filing?</h3>
+            <h4>Input your Tax information below :</h4>
+            <div class="form-group">
+             <label for="income">Income:</label>
+             <input type="text" id="income" name="income" required placeholder="Enter your Income"><br>
+             <label for="expenses">Expenses:</label>
+             <input type="text" id="expenses" name="expenses" required placeholder="Enter your Expenses"><br>
+            </div>
+            <button type="submit">Ask TaxViser</button>
+        </form>
+    </div>
+</body>
+</html>
