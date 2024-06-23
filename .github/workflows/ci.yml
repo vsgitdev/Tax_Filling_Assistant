@@ -29,6 +29,9 @@ jobs:
           source venv/bin/activate
           # Add your test commands here, e.g., pytest tests/
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build Docker image
         run: docker build -t tax_filing_assistant .
 
@@ -48,5 +51,5 @@ jobs:
 
       - name: Push to Docker Hub
         run: |
-          docker tag tax_filing_assistant your_dockerhub_username/tax_filing_assistant:latest
-          docker push your_dockerhub_username/tax_filing_assistant:latest
+          docker tag tax_filing_assistant ${{ secrets.DOCKER_USERNAME }}/tax_filing_assistant:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/tax_filing_assistant:latest
