@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+
+# Environment
+venv/
+ENV/
+env/
+
+# MacOS
+.DS_Store
+
+# Docker
+*.log

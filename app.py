@@ -3,7 +3,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, TaxInfo
 import openai
-import config
+from dotenv import load_dotenv
+import os
+
+load_dotenv() 
 
 app = Flask(__name__)
 
@@ -12,7 +15,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-openai.api_key = config.OPENAI_API_KEY
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 @app.route('/')
 def home():
@@ -46,9 +49,9 @@ def submit():
             {"role": "system", "content": "You are a tax advisor."},
             {"role": "user", "content": f"Give me tax advice for an income of {income} and expenses of {expenses}."}
         ],
-        max_tokens=800
+        max_tokens=150
     )
-    tax_advice = response['choices'][0]['message']['content'].strip()
+    tax_advice = response.choices[0].message['content'].strip()
 
     return redirect(url_for('success', advice=tax_advice))
 
@@ -63,4 +66,4 @@ def error():
     return render_template('error.html', message=message)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
