@@ -51,5 +51,4 @@ jobs:
 
       - name: Push to Docker Hub
         run: |
-          docker tag tax_filing_assistant ${{ secrets.DOCKER_USERNAME }}/tax_filing_assistant:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/tax_filing_assistant:latest
+          run: docker push ${{ secrets.DOCKER_USERNAME }}/tax_filing_assistant:latest
