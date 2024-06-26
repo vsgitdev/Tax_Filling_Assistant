@@ -314,9 +314,9 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 --Steps--
 
- Step 1: Add Secrets to GitHub Repository for Docker username, Docker password and OpenAI API key. 
+ 1. Add Secrets to GitHub Repository for Docker username, Docker password and OpenAI API key. 
  
- Step 2: Create the CI Workflow File that contains these actions:
+ 2. Create the CI Workflow File that contains these actions:
  
    -Name and Trigger the Pipeline
    
