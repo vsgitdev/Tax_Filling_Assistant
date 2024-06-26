@@ -285,19 +285,20 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 --Steps--
- Step 1: Create Dockerfile
+ 1. Create Dockerfile
  Open project directory in VS Code and create a new file named Dockerfile with no   extension and a new .txt file named requirements.txt with all the required packages.
 
- Step 2: Open Docker Desktop
+ 2. Open Docker Desktop
  Download and install Docker Desktop from Docker's official website,
  Launch it and wait to start.
 
- Step 3: Build the Docker Image
+ 3. Build the Docker Image
  Open a terminal in VSCode, navigate to project directory and using this command : "docker build -t tax_filing_assistant ." This command tells Docker to build an image named tax_filing_assistant using the Dockerfile in the current directory (.).
 
 
- Step 4: Run the Docker Container
- Run the Docker container using this command "docker run -p 5000:5000 -e OPENAI_API_KEY=openai_api_key tax_filing_assistant" which contains:
+ 4. Run the Docker Container
+ Run the Docker container using this command:
+ "docker run -p 5000:5000 -e OPENAI_API_KEY=openai_api_key tax_filing_assistant" which contains:
 -p 5000:5000: Maps port 5000 on your local machine to port 5000 in the container.
 -e OPENAI_API_KEY=openai_api_key: Sets the OPENAI_API_KEY environment variable inside the container.
 -tax_filing_assistant: The name of the Docker image to run.
@@ -316,25 +317,39 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
  Step 1: Add Secrets to GitHub Repository for Docker username, Docker password and OpenAI API key. 
  
  Step 2: Create the CI Workflow File that contains these actions:
+ 
    -Name and Trigger the Pipeline
+   
    -Defines the build job to run and specifies the runner environment, here it uses the latest Ubuntu version.
+   
    -Lists the steps to execute in the job and uses the actions/checkout@v3 action to clone the repository.
+   
    -Set up Python: Uses the actions/setup-python@v4 action to set up Python 3.10.
-   -Install dependencies: Creates a virtual environment,activates it and installs the dependencies listed in requirements.txt.  
+   
+   -Install dependencies: Creates a virtual environment,activates it and installs the dependencies listed in requirements.txt. 
+   
    -Run tests
+   
    -Set up Docker Buildx: Uses the docker/setup-buildx-action@v2 action to set up Docker Buildx.
+   
    -Builds a Docker image tagged tax_filing_assistant.
+   
    -Defines the deploy job to run and specifies the runner environment, here it uses the latest Ubuntu version.
+   
     -Lists the steps to execute in the job and uses actions/checkout@v3 action to clone the repository.
+    
     -Uses the docker/setup-buildx-action@v2 action to set up Docker Buildx.
+    
     -Logs into Docker Hub using secrets DOCKER_USERNAME and DOCKER_PASSWORD.
+    
     -Builds and tags the Docker image with the username from the secrets.
+    
     -Pushes the Docker image to Docker Hub.
 
- Step 3: Commit and Push Changes with following commands:
+ 3. Commit and Push Changes with following commands:
  git add .github/workflows/ci.yml
  git commit -m "Add CI pipeline with GitHub Actions"
  git push origin main
 
- Step 4: Monitor the CI Pipeline:
+ 4. Monitor the CI Pipeline:
  Go to the "Actions" tab in my GitHub repository to monitor the CI pipeline. There I  can see the status of the build and deploy jobs.
