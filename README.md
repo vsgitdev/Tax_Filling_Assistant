@@ -336,15 +336,15 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
    
    -Defines the deploy job to run and specifies the runner environment, here it uses the latest Ubuntu version.
    
-    -Lists the steps to execute in the job and uses actions/checkout@v3 action to clone the repository.
+   -Lists the steps to execute in the job and uses actions/checkout@v3 action to clone the repository.
     
-    -Uses the docker/setup-buildx-action@v2 action to set up Docker Buildx.
+   -Uses the docker/setup-buildx-action@v2 action to set up Docker Buildx.
     
-    -Logs into Docker Hub using secrets DOCKER_USERNAME and DOCKER_PASSWORD.
+   -Logs into Docker Hub using secrets DOCKER_USERNAME and DOCKER_PASSWORD.
     
-    -Builds and tags the Docker image with the username from the secrets.
+   -Builds and tags the Docker image with the username from the secrets.
     
-    -Pushes the Docker image to Docker Hub.
+  -Pushes the Docker image to Docker Hub.
 
  3. Commit and Push Changes with following commands:
  git add .github/workflows/ci.yml
