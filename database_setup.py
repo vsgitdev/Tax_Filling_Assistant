@@ -1,8 +1,7 @@
-from sqlalchemy import create_engine, Column, Integer, Float
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+# database_setup.py
 
-Base = declarative_base()
+from sqlalchemy import Column, Integer, Float
+from db_connection import Base, get_engine
 
 class TaxInfo(Base):
     __tablename__ = 'tax_info'
@@ -10,5 +9,5 @@ class TaxInfo(Base):
     income = Column(Float, nullable=False)
     expenses = Column(Float, nullable=False)
 
-engine = create_engine('sqlite:///tax_info.db')
+engine = get_engine()
 Base.metadata.create_all(engine)

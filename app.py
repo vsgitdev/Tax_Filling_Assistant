@@ -1,19 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from database_setup import Base, TaxInfo
+from db_connection import session
+from database_setup import TaxInfo
 import openai
-from dotenv import load_dotenv
 import os
-
-load_dotenv() 
 
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///tax_info.db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -30,7 +23,8 @@ def submit():
     try:
         income = float(income)
         expenses = float(expenses)
-        
+        # Best practice is to return the proper http rest api error code here for bad user input 400 Bad Request, 
+        # but I wouldn't succeed the automatic redirection to error page to inform the user.
         if income < 0 or expenses < 0:
             return redirect(url_for('error', message="Income and expenses must be non-negative"))
         if len(str(int(income))) > 10 or len(str(int(expenses))) > 10:
@@ -43,17 +37,22 @@ def submit():
     session.commit()
 
     # Call OpenAI API for tax advice
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a tax advisor."},
-            {"role": "user", "content": f"Give me tax advice for an income of {income} and expenses of {expenses}."}
-        ],
-        max_tokens=150
-    )
-    tax_advice = response.choices[0].message['content'].strip()
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a tax advisor."},
+                {"role": "user", "content": f"Give me tax advice for an income of {income} and expenses of {expenses}."}
+            ],
+            max_tokens=150
+        )
+        tax_advice = response.choices[0].message['content'].strip()
 
-    return redirect(url_for('success', advice=tax_advice))
+        return redirect(url_for('success', advice=tax_advice))
+    except Exception as e:
+        error_message = "Failed to get advice from OpenAI API"
+        app.logger.error(f"OpenAI API error: {str(e)}")
+        return jsonify({"error": error_message}), 500
 
 @app.route('/success')
 def success():
