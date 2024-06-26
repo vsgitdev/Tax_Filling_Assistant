@@ -62,7 +62,7 @@ Visual Studio Code (VS Code)
 
 1.Create github repository
 
-2.Initialize Git in your project directory running the following command:
+2.Initialize Git in the project directory running the following command:
   git init
 
 3.Add all files to the repository running the following command:
@@ -71,7 +71,7 @@ Visual Studio Code (VS Code)
 4.Commit the changes running the following command:
   git commit -m "Initial commit"
 
-5.Push your local repository to GitHub:
+5.Push local repository to GitHub:
   git remote add origin https://github.com/vsgitdev/Tax_Filling_Assistant.git
   git branch -M main
   git push -u origin main
@@ -94,11 +94,14 @@ Visual Studio Code (VS Code)
    python -m venv venv
    venv\Scripts\activate  # On Windows
    source venv/bin/activate  # On macOS/Linux 
+
+ 5. Install the required packages: With the virtual environment activated, install all necessary dependencies listed in the `requirements.txt` file using the following command:
+     pip install -r requirements.txt
    
-  5. Run the Flask application using the following command:
+ 6. Run the Flask application using the following command:
         python app.py     
 
-  6. Open your web browser and go to:
+ 7. Open your web browser and go to:
         http://127.0.0.1:5000/
 
 
@@ -124,91 +127,84 @@ Google Fonts for the fonts
 2. Install dependencies running the following command:
     pip install flask sqlalchemy openai (for the next step)
 
-3. Create database_setup.py file which contains script that defines the database and the table structure. 
+3. Create db_connection.py file, which manages database connection and session creation using SQLAlchemy.
+  Specifically:
+  Imports: Imports necessary SQLAlchemy modules (create_engine, sessionmaker, declarative_base).
+ Base Definition: Defines Base using declarative_base(), which is used for defining SQLAlchemy models.
+ Functions:
+ get_engine: Returns a SQLAlchemy engine object configured with the specified    database URL (sqlite:///tax_info.db by default).
+ get_session: Returns a SQLAlchemy session object bound to the provided engine (get_engine()).
+ Initialization: Immediately initializes engine and session using get_engine() and get_session() respectively.
+
+4. Create database_setup.py file which contains script that defines the database schema and the table structure. 
+ defines the database schema and creates necessary tables.
+
+ Imports: Imports necessary SQLAlchemy modules (Column, Integer, Float, Base) and the get_engine function from db_connection.py.
+ Model Definition: Defines a SQLAlchemy model (TaxInfo) for the tax_info table with columns (id, income, expenses).
+ Table Creation: Uses Base.metadata.create_all(engine) to create the database tables defined by the models in the specified engine (get_engine()).
 
 4. Run database_setup.py to create the database and this will create tax_info.db with the defined table structure using this command :
    python database_setup.py
 
 
----------API Endpoints----------
+---------API Endpoints & Error handling----------
 
---Submit Tax Information--
-  URL: /submit
-  Method: POST
-  This endpoint accepts tax information from the user, specifically their income   and expenses. The data is validated to ensure it is numeric and within acceptable limits.
+-Home Page
 
-Request
-Data Parameters:
-income: A numeric value representing the user's income.
-expenses: A numeric value representing the user's expenses.
 
-Responses
+1. URL: /
+Method: GET
+Displays the home page with a form for users to submit their income and expenses.
+
+
+2. URL: /submit
+Method: POST
+This endpoint accepts tax information from the user, specifically their income and expenses. The data is validated to ensure it is numeric and within acceptable limits.
+
+Request Data Parameters: income & expenses.
+
+Responses:
+
 Success Response:
-   When the data is submitted successfully, the server responds with a status   code 201 Created and a message indicating the success.
-   Example: { "message": "Data submitted successfully" }
+Status Code: 302 Found (Redirection to success page)
+Redirects to the success page with AI-generated tax advice.
 
 Error Responses:
-   If the input data is not valid (e.g., non-numeric values or numbers exceeding a certain length), the server responds with a status code 400 Bad Request and an appropriate error message.
-  Examples:
-{ "error": "Invalid input. Please enter numeric values for income and expenses" }
-{ "error": "Income and expenses must not exceed 10 digits" }
+Status Code: 302 Found (Redirection to error page)
+Redirects to the error page with an appropriate error message.
+
+(Best practice is to return the proper http rest api error code here for bad user input 400 Bad Request, but I couldn't succeed the automatic redirection to error page to inform the user.)
 
 
---Success Page--
-URL: /success
+- Success Page
+
+3. URL: /success
+
 Method: GET
-This endpoint displays a success message to the user, indicating that their data was submitted correctly.
 
-Responses
+Displays a success message to the user, indicating that their data was submitted correctly and shows the AI-generated tax advice.
+
+Responses:
+
 Success Response:
-The server responds with a status code 200 OK and displays an HTML page with a success message.
-Content: HTML page with success message.
+Status Code: 200 OK
+HTML page with a success message and tax advice.
 
 
-Error Page
-URL: /error
+-Error Page
+
+4. URL: /error
+
 Method: GET
-This endpoint displays an error message to the user, indicating that there was an issue with their data submission.
 
-Request:
-Query Params:
-message: A string parameter that contains the specific error message to be displayed to the user.
+Displays an error message to the user, indicating that there was an issue with their data submission.
 
-Responses
+Request Query Parameters: message: A string parameter that contains the specific error message to be displayed to the user.
+
+Responses:
 Error Response:
-The server responds with a status code 200 OK and displays an HTML page with the provided error message.
-Content: HTML page with error message.
-
-
------------Routes----------
-
---Home Route:--
-
-Endpoint: /
-Method: GET
-Function: home()
-Renders the homepage of the application.
-
---Submit Route:--
-
-Endpoint: /submit
-Method: POST
-Function: submit()
-Handles the submission of tax information. It performs server-side validation to ensure the data is numeric and within acceptable limits. If the data is valid, it is saved to the database, and a request is made to the OpenAI API to get tax advice. The user is then redirected to the success page with the tax advice.
-Success Route:
-
-Endpoint: /success
-Method: GET
-Function: success()
-Displays the success page with the tax advice provided by the OpenAI API.
-
-
---Error Route:--
-
-Endpoint: /error
-Method: GET
-Function: error()
-Displays an error page with a specific error message passed as a query parameter.
+Status Code: 200 OK
+HTML page with the provided error message.
 
 
 # TASK 3
@@ -269,7 +265,7 @@ OpenAI Python client library
 
 
 
-2nd method : (Updated method to address GitHub violations)
+2nd method : (Updated method to address GitHub violations and enhance security of the sensitive Apikey)
 To address GitHub violations due to the presence of sensitive information (OpenAI API key) in the code, the following steps were taken:
 
 1. Create an .env in the root directory of my project and add the provided OpenAI API key:
@@ -278,11 +274,10 @@ To address GitHub violations due to the presence of sensitive information (OpenA
 2. Create a .gitignore file in the root directory of my project and add the .env
 
 3. Updated the app.py file :
-from dotenv import load_dotenv
-load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 4. Push changes to GitHub repository
+
 
 
 # TASK 4
@@ -291,7 +286,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 --Steps--
  Step 1: Create Dockerfile
- Open project directory in VS Code and create a new file named Dockerfile with no   extension and a new .txt file named requirements.txt
+ Open project directory in VS Code and create a new file named Dockerfile with no   extension and a new .txt file named requirements.txt with all the required packages.
 
  Step 2: Open Docker Desktop
  Download and install Docker Desktop from Docker's official website,
@@ -315,7 +310,9 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 -----------------------DevOps and Continuous Integration----------------------
 
 ----Setting up the CI Pipeline---
+
 --Steps--
+
  Step 1: Add Secrets to GitHub Repository for Docker username, Docker password and OpenAI API key. 
  
  Step 2: Create the CI Workflow File that contains these actions:
