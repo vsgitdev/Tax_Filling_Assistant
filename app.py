@@ -60,7 +60,7 @@ def submit():
                     "content": f"Give me tax advice for an income of {income} and expenses of {expenses}.",
                 },
             ],
-            max_tokens=150,
+            max_tokens=700,
         )
         tax_advice = response.choices[0].message["content"].strip()
 
