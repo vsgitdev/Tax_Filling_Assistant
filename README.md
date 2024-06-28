@@ -149,7 +149,7 @@ Google Fonts for the fonts
 
 ---------API Endpoints & Error handling----------
 
--Home Page
+- Home Page
 
 
 1. URL: /
@@ -191,7 +191,7 @@ Status Code: 200 OK
 HTML page with a success message and tax advice.
 
 
--Error Page
+- Error Page
 
 4. URL: /error
 
